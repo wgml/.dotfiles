@@ -113,11 +113,26 @@ alias weather="curl wttr.in/Krakow"
 
 export EDITOR=nvim
 export VISUAL="$EDITOR"
+alias vim=nvim
+alias gvim="nvim-qt --maximized"
 
 alias grep="/usr/bin/grep $GREP_OPTIONS"
 unset GREP_OPTIONS
 
-alias vim=nvim
 
+COMPLETION_WAITING_DOTS="true"
 
 export PATH="/home/vka/Programming/C/compiler/llvm-4.0/bin:$PATH"
+
+for d in bin ; do
+  directories=(~/local-root/*/$d)
+  result_path=$(printf "%s:" "$directories[@]")
+  export PATH="${result_path}${PATH}"
+done;
+
+function cdtmp {
+  tmp=$(mktemp -d)
+  echo "Changing directory to temporary: $tmp"
+  cd $tmp
+}
+

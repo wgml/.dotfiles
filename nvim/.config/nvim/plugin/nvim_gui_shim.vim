@@ -1,0 +1,1 @@
+/home/vka/git/neovim-qt/src/gui/runtime/plugin/nvim_gui_shim.vim
