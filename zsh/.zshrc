@@ -5,8 +5,9 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-#ZSH_THEME="avit"
-ZSH_THEME="agnoster"
+ZSH_THEME="sobole"
+SOBOLE_THEME_MODE="dark"
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -110,5 +111,13 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 alias weather="curl wttr.in/Krakow"
 
-export EDITOR=vim
+export EDITOR=nvim
 export VISUAL="$EDITOR"
+
+alias grep="/usr/bin/grep $GREP_OPTIONS"
+unset GREP_OPTIONS
+
+alias vim=nvim
+
+
+export PATH="/home/vka/Programming/C/compiler/llvm-4.0/bin:$PATH"
