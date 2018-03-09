@@ -21,11 +21,18 @@ Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
+" dev
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --rust-completer' }
+
 " cpp
 " Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'rhysd/vim-clang-format'
-Plug 'Valloric/YouCompleteMe', {'frozen': 'true'}
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+" Plug 'Valloric/YouCompleteMe', {'frozen': 'true'}
+" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+
+" rust
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 
 Plug 'vim-syntastic/syntastic'
 " tmux integration
@@ -62,9 +69,9 @@ set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 
-set foldenable          " enable folding
-set foldmethod=syntax   " fold based on indent level
-set foldlevelstart=10   " open most folds by default
+" set foldenable          " enable folding
+" set foldmethod=syntax   " fold based on indent level
+" set foldlevelstart=10   " open most folds by default
 
 nnoremap <space> za
 
@@ -127,12 +134,12 @@ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 " airline
 set encoding=utf-8
 let g:airline_powerline_fonts = 1
-set guifont=Source\ Code\ Pro\ for\ Powerline
+" set guifont=Source\ Code\ Pro\ for\ Powerline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let airline#extensions#tabline#middle_click_preserves_windows = 1
-nmap <C-Left>  <Plug>AirlineSelectPrevTab
-nmap <C-Right> <Plug>AirlineSelectNextTab
+nmap <C-S-Left>  <Plug>AirlineSelectPrevTab
+nmap <C-S-Right> <Plug>AirlineSelectNextTab
 
 " gitgutter
 let g:gitgutter_override_sign_column_highlight = 0
@@ -151,7 +158,12 @@ nnoremap <F6> :UndotreeToggle<cr>
 nnoremap <F4> :call SourceHeaderJump()<CR>
 nnoremap <S-F4> *:call SourceHeaderJump()<CR>n:noh<CR>
 
-"
+" navigate splits
+
+nnoremap <C-Left> <C-w><C-h>
+nnoremap <C-Right> <C-w><C-l>
+nnoremap <C-Up> <C-w><C-k>
+nnoremap <C-Down> <C-w><C-j>
 " tmux navigator
 " let g:tmux_navigator_no_mappings = 1
 " let g:tmux_navigator_disable_when_zoomed = 1
@@ -169,7 +181,7 @@ nnoremap <S-F4> *:call SourceHeaderJump()<CR>n:noh<CR>
 " <C-/> really
 nmap <C-_> gcc <Down>
 vmap <C-_> gc <Down>
-autocmd FileType c,cpp,java setlocal commentstring=//\ %s
+autocmd FileType c,cpp,java,rs setlocal commentstring=//\ %s
 
 " syntastic
 set statusline+=%#warningmsg#
@@ -183,4 +195,13 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++17 -stdlib=libc++'
 let g:syntastic_cpp_check_header = 1
+
+" rust racer
+set hidden
+let g:racer_cmd = "~/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+au FileType rust nmap <C-b> <Plug>(rust-def)
+" au FileType rust nmap gs <Plug>(rust-def-split)
+" au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <C-S-b> <Plug>(rust-doc)
 
