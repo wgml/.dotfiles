@@ -4,9 +4,12 @@ call plug#begin('~/.config/nvim/plugged/')
 
 " themes
 Plug 'joshdick/onedark.vim'
+Plug 'lifepillar/vim-solarized8'
 
 " look and feel
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
@@ -14,7 +17,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'kien/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-commentary'
-Plug 'jiangmiao/auto-pairs'
 Plug 'majutsushi/tagbar'
 
 " git
@@ -25,14 +27,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --rust-completer' }
 
 " cpp
-" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'rhysd/vim-clang-format'
-" Plug 'Valloric/YouCompleteMe', {'frozen': 'true'}
-" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 " rust
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
+
+" python
+Plug 'davidhalter/jedi-vim'
 
 Plug 'vim-syntastic/syntastic'
 " tmux integration
@@ -44,9 +46,14 @@ Plug 'sheerun/vim-polyglot'
 " misc
 Plug 'jremmen/vim-ripgrep'
 
+Plug 'junegunn/goyo.vim'
+Plug 'gabrielelana/vim-markdown'
 call plug#end()
 
 colorscheme onedark
+" set background=light
+" colorscheme solarized8
+" let g:airline_theme='solarized'
 
 syntax on
 set number
@@ -146,7 +153,7 @@ let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_diff_base = 'HEAD'
 
 " clang-format
-map <C-A-l> :ClangFormat<CR>
+map <C-k> :ClangFormat<CR>
 
 " tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -196,12 +203,19 @@ let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++17 -stdlib=libc++'
 let g:syntastic_cpp_check_header = 1
 
-" rust racer
-set hidden
-let g:racer_cmd = "~/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
-au FileType rust nmap <C-b> <Plug>(rust-def)
-" au FileType rust nmap gs <Plug>(rust-def-split)
-" au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <C-S-b> <Plug>(rust-doc)
+" Goyo
+let g:goyo_width='95%'
+let g:goyo_height='95%'
+let g:goyo_linenr=1
 
+let conceillevel=2
+
+" jedi
+
+let g:jedi#goto_command = "<leader>b"
+let g:jedi#goto_assignments_command = ""
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = ""
+let g:jedi#usages_command = "<leader>u"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"

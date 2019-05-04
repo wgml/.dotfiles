@@ -1,6 +1,7 @@
 [user]
 	email = wojciech.gumula@gmail.com
-	name = Wojtek Gumuła
+	name = Wojtek Gumula
+	signingkey = 7A4ECB475C781C92
 [grep]
 	lineNumber = true
 [alias]
@@ -14,7 +15,7 @@
 [credential]
 	helper = cache --timeout=999999
 [core]
-	editor = vim
+	editor = nvim
 [pager]
 	diff = ~/git/diff-so-fancy/diff-so-fancy | less --tabs=1,5 -RFX
 	show = ~/git/diff-so-fancy/diff-so-fancy | less --tabs=1,5 -RFX

@@ -124,7 +124,7 @@ COMPLETION_WAITING_DOTS="true"
 
 export PATH="/home/vka/Programming/C/compiler/llvm-4.0/bin:$PATH"
 
-for d in bin ; do
+for d in bin usr/local/bin ; do
   directories=(~/local-root/*/$d)
   result_path=$(printf "%s:" "$directories[@]")
   export PATH="${result_path}${PATH}"
@@ -138,4 +138,6 @@ function cdtmp {
 
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
+export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
+export PATH=$PATH:$HOME/.local/bin
 export LC_ALL=C
