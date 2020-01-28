@@ -3,8 +3,7 @@ set nocompatible
 call plug#begin('~/.config/nvim/plugged/')
 
 " themes
-Plug 'joshdick/onedark.vim'
-Plug 'lifepillar/vim-solarized8'
+Plug 'icymind/NeoSolarized'
 
 " look and feel
 Plug 'vim-airline/vim-airline'
@@ -15,30 +14,25 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " productivity
 Plug 'kien/ctrlp.vim'
-Plug 'mbbill/undotree'
 Plug 'tpope/vim-commentary'
-Plug 'majutsushi/tagbar'
 
 " git
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
-" dev
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --rust-completer' }
-
 " cpp
-Plug 'rhysd/vim-clang-format'
+Plug 'rhysd/vim-clang-format', { 'for': 'cpp' }
 
 " rust
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
 " python
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'ambv/black', { 'for': 'python' }
 
-Plug 'vim-syntastic/syntastic'
-" tmux integration
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'w0rp/ale'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " syntax highlighting
 Plug 'sheerun/vim-polyglot'
@@ -46,14 +40,14 @@ Plug 'sheerun/vim-polyglot'
 " misc
 Plug 'jremmen/vim-ripgrep'
 
-Plug 'junegunn/goyo.vim'
-Plug 'gabrielelana/vim-markdown'
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 call plug#end()
 
-colorscheme onedark
-" set background=light
-" colorscheme solarized8
-" let g:airline_theme='solarized'
+set termguicolors
+set background=light
+colorscheme NeoSolarized
+let g:airline_theme='solarized'
 
 syntax on
 set number
@@ -76,16 +70,6 @@ set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 
-" set foldenable          " enable folding
-" set foldmethod=syntax   " fold based on indent level
-" set foldlevelstart=10   " open most folds by default
-
-nnoremap <space> za
-
-" background change for too long lines
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%120v.\+/
-
 let mapleader=','
 
 " use system clipboard
@@ -97,9 +81,11 @@ augroup resCur
   autocmd BufReadPost * call setpos(".", getpos("'\""))
 augroup END
 
+set completeopt=menuone,noselect,preview,longest
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+set autoindent
+
 " NERDTree
-" autocmd VimEnter * NERDTree
-" autocmd VimEnter * wincmd p
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeShowHidden=1
@@ -119,29 +105,9 @@ set list
 " strip trailing whitespaces
 autocmd BufWritePre * :%s/\s\+$//e
 
-" YCM
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_error_symbol = '»'
-let g:ycm_warning_symbol = '»'
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_server_python_interpreter = '/usr/bin/python'
-let g:ycm_complete_in_comments_and_strings = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-
-nnoremap <C-f> :YcmCompleter FixIt<CR>
-nnoremap <C-g> :YcmCompleter GoTo<CR>
-nnoremap <leader>yg :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>yd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>yc :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>yf :YcmCompleter FixIt<CR>
-nnoremap <C-b> :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
-
 " airline
 set encoding=utf-8
 let g:airline_powerline_fonts = 1
-" set guifont=Source\ Code\ Pro\ for\ Powerline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let airline#extensions#tabline#middle_click_preserves_windows = 1
@@ -152,66 +118,19 @@ nmap <C-S-Right> <Plug>AirlineSelectNextTab
 let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_diff_base = 'HEAD'
 
-" clang-format
-map <C-k> :ClangFormat<CR>
-
-" tagbar
-nmap <F8> :TagbarToggle<CR>
-
-" undo tree
-nnoremap <F6> :UndotreeToggle<cr>
-
-" jumping between sources and headers
-nnoremap <F4> :call SourceHeaderJump()<CR>
-nnoremap <S-F4> *:call SourceHeaderJump()<CR>n:noh<CR>
-
 " navigate splits
 
 nnoremap <C-Left> <C-w><C-h>
 nnoremap <C-Right> <C-w><C-l>
 nnoremap <C-Up> <C-w><C-k>
 nnoremap <C-Down> <C-w><C-j>
-" tmux navigator
-" let g:tmux_navigator_no_mappings = 1
-" let g:tmux_navigator_disable_when_zoomed = 1
-" nnoremap <silent> <C-Left> :TmuxNavigateLeft<cr>
-" nnoremap <silent> <C-Right> :TmuxNavigateRight<cr>
-" nnoremap <silent> <C-Up> :TmuxNavigateUp<cr>
-" nnoremap <silent> <C-Down> :TmuxNavigateDown<cr>
-"
-" tmux integration
-" nmap <C-s> :!tmux send-keys -t 0:1.1 icsync C-j <CR><CR>
-" nmap <C-S-A-s> :!tmux send-keys -t 0:1.1 isell-rsync C-j <CR><CR>
-" nmap <C-c> :!tmux send-keys -t 0:1.2 "cd /login/sg222576/git/isell/$(git rev-parse --abbrev-ref HEAD)/IC && ./ibuild All" C-j <CR><CR>
 
 " vim-commentary
-" <C-/> really
 nmap <C-_> gcc <Down>
 vmap <C-_> gc <Down>
 autocmd FileType c,cpp,java,rs setlocal commentstring=//\ %s
 
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++17 -stdlib=libc++'
-let g:syntastic_cpp_check_header = 1
-
-" Goyo
-let g:goyo_width='95%'
-let g:goyo_height='95%'
-let g:goyo_linenr=1
-
-let conceillevel=2
-
 " jedi
-
 let g:jedi#goto_command = "<leader>b"
 let g:jedi#goto_assignments_command = ""
 let g:jedi#goto_definitions_command = ""
@@ -219,3 +138,14 @@ let g:jedi#documentation_command = ""
 let g:jedi#usages_command = "<leader>u"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
+
+" ale
+let g:ale_fixers = {'sh': ['shellcheck'], 'python': ['black']}
+let g:ale_linters = {'sh': ['shellcheck'], 'cpp': ['clang', 'clangd'], 'perl': 'perl', 'python': ['flake8']}
+let g:ale_linters_explicit = 1
+let g:ale_completion_enabled = 0
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete = 1
+let g:deoplete#sources = {'_': ['ale']}

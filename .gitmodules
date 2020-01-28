@@ -19,3 +19,9 @@
 [submodule "git/git/diff-so-fancy"]
 	path = git/git/diff-so-fancy
 	url = https://github.com/so-fancy/diff-so-fancy.git
+[submodule "python/.pyenv"]
+	path = python/.pyenv
+	url = https://github.com/pyenv/pyenv.git
+[submodule "java/.jenv"]
+	path = java/.jenv
+	url = https://github.com/gcuisinier/jenv.git
